@@ -48,7 +48,10 @@ def main [] {
   add-target $targets
   build-binaries $targets
   package-binaries $targets
-  release-binaries $targets
+
+  if (in-github-actions) {
+    release-binaries $targets
+  }
 
   print 'Build completed!'
 
@@ -85,6 +88,10 @@ def get-ref-name [] {
   }
 
   return $ref_name
+}
+
+def in-github-actions [] {
+  return ('GITHUB_TOKEN' in $env)
 }
 
 def is-windows [target: string] {
