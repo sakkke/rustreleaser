@@ -126,6 +126,8 @@ def package-binaries [targets: list<string>] {
 }
 
 def release-binaries [targets: list<string>] {
+  print 'Releasing binaries...'
+
   let archives: list<string> = ($targets | each {|target|
     let package_name: string = (open Cargo.toml).package.name
     let ref_name = get_ref_name
