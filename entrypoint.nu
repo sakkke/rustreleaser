@@ -71,6 +71,22 @@ def build-binaries [targets: list<string>] {
   }
 }
 
+def get-ref-name [] {
+  let ref_name = (git rev-parse --short HEAD)
+
+  if 'GITHUB_REF_NAME' in $env {
+    return $ref_name
+  }
+
+  git diff --quiet
+
+  if $env.LAST_EXIT_CODE != 0 {
+    return $"($ref_name)-dirty"
+  }
+
+  return $ref_name
+}
+
 def is-windows [target: string] {
   let triplet = ($target | split row -)
 
@@ -84,7 +100,7 @@ def package-binaries [targets: list<string>] {
 
   $targets | each {|target|
     let package_name: string = (open Cargo.toml).package.name
-    let ref_name = $env.GITHUB_REF_NAME
+    let ref_name = get-ref-name
 
     let dir = $"target/($target)/release"
 
