@@ -5,7 +5,6 @@ def main [] {
   | lines
   | where $it !~ '^#' and $it != ''
 
-  add-targets $targets
   build-binaries $targets
   package-binaries $targets
 
@@ -16,14 +15,6 @@ def main [] {
   }
 
   return
-}
-
-def add-target [targets: list<string>] {
-  print 'Adding targets...'
-
-  $targets | each {|target|
-    rustup -q target add $target
-  }
 }
 
 def build-binaries [targets: list<string>] {

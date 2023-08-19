@@ -23,6 +23,14 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 SHELL [ "/usr/local/bin/nu", "-c" ]
 
 COPY targets.txt /targets.txt
+RUN $env.PATH = ($env.PATH | prepend $"($env.HOME)/.cargo/bin"); \
+  open targets.txt \
+  | lines \
+  | where $it !~ '^#' and $it != '' \
+  | each { |it| \
+    rustup target add $it \
+  }; \
+  exit
 
 COPY entrypoint.nu /entrypoint.nu
 
