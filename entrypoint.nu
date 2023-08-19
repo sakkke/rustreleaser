@@ -121,8 +121,9 @@ def package-binaries [targets: list<string>] {
 def release-binaries [targets: list<string>] {
   let archives: list<string> = ($targets | each {|target|
     let package_name: string = (open Cargo.toml).package.name
+    let ref_name = get_ref_name
     let ext = "tar.gz"
-    let archive = $"($package_name)-($target).($ext)"
+    let archive = $"($package_name)-($ref_name)-($target).($ext)"
     $archive
   })
 
