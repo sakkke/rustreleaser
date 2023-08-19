@@ -1,51 +1,11 @@
 #!/usr/bin/env nu
 
 def main [] {
-  let targets = [
-    x86_64-apple-darwin
-    aarch64-apple-darwin
-    i686-unknown-linux-gnu
+  let targets = open /targets.txt
+  | lines
+  | where $it !~ '^#' and $it != ''
 
-    # Fails in:
-    # cargo-zigbuild: 0.17.0
-    # Rust: 1.71.0
-    # Zig: 0.11.0
-
-    # i686-unknown-linux-musl
-
-    x86_64-unknown-linux-gnu
-
-    # Fails in:
-    # cargo-zigbuild: 0.17.0
-    # Rust: 1.71.0
-    # Zig: 0.11.0
-
-    # x86_64-unknown-linux-musl
-
-    aarch64-unknown-linux-gnu
-
-    # Fails in:
-    # cargo-zigbuild: 0.17.0
-    # Rust: 1.71.0
-    # Zig: 0.11.0
-
-    # aarch64-unknown-linux-musl
-
-    i686-pc-windows-gnu
-
-    # Not supported
-    # i686-pc-windows-msvc
-
-    x86_64-pc-windows-gnu
-
-    # Not supported
-    # x86_64-pc-windows-msvc
-
-    # Not supported
-    # aarch64-pc-windows-msvc
-  ]
-
-  add-target $targets
+  add-targets $targets
   build-binaries $targets
   package-binaries $targets
 

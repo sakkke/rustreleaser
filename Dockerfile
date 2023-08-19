@@ -20,6 +20,10 @@ USER build
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
+SHELL [ "/usr/local/bin/nu", "-c" ]
+
+COPY targets.txt /targets.txt
+
 COPY entrypoint.nu /entrypoint.nu
 
 WORKDIR /work
