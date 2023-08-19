@@ -49,11 +49,11 @@ def main [] {
   build-binaries $targets
   package-binaries $targets
 
+  print 'Build completed!'
+
   if (in-github-actions) {
     release-binaries $targets
   }
-
-  print 'Build completed!'
 
   return
 }
