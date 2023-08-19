@@ -70,7 +70,7 @@ def build-binaries [targets: list<string>] {
   print 'Building binaries...'
 
   $targets | each {|target|
-    cargo zigbuild --target $target -qr
+    cargo zigbuild --target $target -r
   }
 }
 
