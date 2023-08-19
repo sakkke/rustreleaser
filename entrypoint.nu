@@ -105,13 +105,13 @@ def is-windows [target: string] {
 def package-binaries [targets: list<string>] {
   print 'Packaging binaries...'
 
-  $targets | each {|target|
-    let package_name: string = (open Cargo.toml).package.name
-    let ref_name = get-ref-name
+  let package_name: string = (open Cargo.toml).package.name
+  let ref_name = get-ref-name
+  let ext = "tar.gz"
 
+  $targets | each {|target|
     let dir = $"target/($target)/release"
 
-    let ext = "tar.gz"
     let archive = $"($package_name)-($ref_name)-($target).($ext)"
     let file = $package_name
 
@@ -128,13 +128,14 @@ def package-binaries [targets: list<string>] {
 def release-binaries [targets: list<string>] {
   print 'Releasing binaries...'
 
+  let package_name: string = (open Cargo.toml).package.name
+  let ref_name = get_ref_name
+  let ext = "tar.gz"
+
   let archives: list<string> = ($targets | each {|target|
-    let package_name: string = (open Cargo.toml).package.name
-    let ref_name = get_ref_name
-    let ext = "tar.gz"
     let archive = $"($package_name)-($ref_name)-($target).($ext)"
     $archive
   })
 
-  gh release create $env.GITHUB_REF_NAME $archives
+  gh release create $ref_name $archives
 }
