@@ -1,6 +1,12 @@
 #!/usr/bin/env nu
 
+def-env setup [] {
+  $env.PATH = ($env.PATH | prepend $"($env.HOME)/.cargo/bin")
+}
+
 def main [] {
+  setup
+
   let targets = open /targets.txt
   | lines
   | where $it !~ '^#' and $it != ''
